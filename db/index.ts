@@ -4,14 +4,16 @@ import * as schema from './schema'
 
 let _db: ReturnType<typeof drizzle<typeof schema>> | null = null
 
+/**
+ * Lazy singleton — only called at request time, never at build time.
+ * Throws clearly if DATABASE_URL is missing so misconfiguration is obvious.
+ */
 export function getDb() {
   if (!_db) {
-    // neon() throws on undefined — provide a placeholder during `next build`
-    // when env vars are absent. No query ever runs at build time.
-    const url =
-      process.env.DATABASE_URL ??
-      'postgresql://build:build@build.neon.tech/build'
-    const sql = neon(url)
+    if (!process.env.DATABASE_URL) {
+      throw new Error('DATABASE_URL is not configured')
+    }
+    const sql = neon(process.env.DATABASE_URL)
     _db = drizzle(sql, { schema })
   }
   return _db

@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import { eq } from 'drizzle-orm'
-import { auth } from '@/lib/auth'
+import { getAuth } from '@/lib/auth'
 import { getDb } from '@/db'
 import { userPhases, tracks, templatePhases } from '@/db/schema'
 import TrackSelector from '@/components/onboarding/TrackSelector'
@@ -9,7 +9,7 @@ import TrackSelector from '@/components/onboarding/TrackSelector'
 export const dynamic = 'force-dynamic'
 
 export default async function OnboardingPage() {
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await getAuth().api.getSession({ headers: await headers() })
   if (!session) redirect('/login')
 
   const db = getDb()

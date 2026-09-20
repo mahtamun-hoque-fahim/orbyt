@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 import { eq } from 'drizzle-orm'
-import { auth } from '@/lib/auth'
+import { getAuth } from '@/lib/auth'
 import { getDb } from '@/db'
 import {
   templatePhases,
@@ -13,13 +13,12 @@ import {
 } from '@/db/schema'
 
 export async function selectTrack(trackId: string) {
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await getAuth().api.getSession({ headers: await headers() })
   if (!session) redirect('/login')
 
   const db = getDb()
   const userId = session.user.id
 
-  // Copy template phases in order
   const phases = await db
     .select()
     .from(templatePhases)
@@ -63,9 +62,8 @@ export async function selectTrack(trackId: string) {
 }
 
 export async function selectCustomTrack() {
-  const session = await auth.api.getSession({ headers: await headers() })
+  const session = await getAuth().api.getSession({ headers: await headers() })
   if (!session) redirect('/login')
 
-  // Custom track: no phases seeded. User builds their track via /settings.
   redirect('/dashboard')
 }
