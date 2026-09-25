@@ -1,5 +1,17 @@
 import { Box, Container, Typography, Grid } from '@mui/material'
-import { PHASE_COLORS } from '@/lib/phase-colors'
+
+// Landing-only palette — 8 shades from lime to deep forest green.
+// Keeps the tech brand colors on the dashboard/phase pages where they carry meaning.
+const PREVIEW_COLORS = [
+  '#C5F74F', // Phase 1 — bright lime (Orbyt accent)
+  '#ABDE40', // Phase 2 — lime-green
+  '#8EC435', // Phase 3 — mid green
+  '#71AB2C', // Phase 4 — fresh green
+  '#569224', // Phase 5 — standard green
+  '#3E7A1D', // Phase 6 — medium forest
+  '#2B6318', // Phase 7 — deep forest
+  '#1A4E11', // Phase 8 — very deep forest
+]
 
 const phases = [
   { name: 'HTML and CSS', channel: 'Kevin Powell' },
@@ -45,16 +57,21 @@ export default function TrackPreviewSection() {
                   borderRadius: '10px',
                   backgroundColor: 'background.paper',
                   borderLeftWidth: '3px',
-                  borderLeftColor: PHASE_COLORS[i],
+                  borderLeftColor: PREVIEW_COLORS[i],
                   transition: 'border-color 0.2s ease',
                   '&:hover': {
-                    borderColor: PHASE_COLORS[i],
+                    borderColor: PREVIEW_COLORS[i],
                   },
                 }}
               >
                 <Typography
                   variant="caption"
-                  sx={{ color: PHASE_COLORS[i], display: 'block', mb: 0.75, fontWeight: 600 }}
+                  sx={{
+                    color: PREVIEW_COLORS[i],
+                    display: 'block',
+                    mb: 0.75,
+                    fontWeight: 600,
+                  }}
                 >
                   Phase {i + 1}
                 </Typography>
