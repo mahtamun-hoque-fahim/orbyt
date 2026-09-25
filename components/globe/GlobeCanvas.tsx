@@ -14,13 +14,14 @@ export default function GlobeCanvas() {
     const scene = new THREE.Scene()
 
     const camera = new THREE.PerspectiveCamera(
-      60,
+      55,
       mount.clientWidth / mount.clientHeight,
       0.1,
       100
     )
-    camera.position.set(0, 2, 18)
-    camera.lookAt(0, -2, 0)
+    // Straight-on view — full sphere visible in side panel
+    camera.position.set(0, 1, 16)
+    camera.lookAt(0, 0, 0)
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
     renderer.setSize(mount.clientWidth, mount.clientHeight)
@@ -28,11 +29,11 @@ export default function GlobeCanvas() {
     renderer.setClearColor(0x000000, 0)
     mount.appendChild(renderer.domElement)
 
-    const sphereGeo = new THREE.SphereGeometry(6, 24, 18)
+    const sphereGeo = new THREE.SphereGeometry(6, 28, 20)
     const wireframeGeo = new THREE.WireframeGeometry(sphereGeo)
     const material = new THREE.LineDashedMaterial({
       color: 0xffffff,
-      opacity: 0.12,
+      opacity: 0.18,
       transparent: true,
       dashSize: 0.12,
       gapSize: 0.06,
@@ -41,8 +42,8 @@ export default function GlobeCanvas() {
 
     const globe = new THREE.LineSegments(wireframeGeo, material)
     globe.computeLineDistances()
-    // Y -6 so only the top hemisphere is visible above the fold
-    globe.position.y = -6
+    // Y = 0: full sphere centered, fully visible in panel
+    globe.position.y = 0
     scene.add(globe)
 
     let animId: number
